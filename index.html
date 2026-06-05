@@ -10,7 +10,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
   :root{
-    --bg:#F1EBDF;--surface:#FCFAF4;--surface-2:#F7F2E8;--ink:#1B1915;--muted:#6E6757;--faint:#9A9281;
+    --bg:#DCEAFB;--surface:#FCFAF4;--surface-2:#F7F2E8;--ink:#1B1915;--muted:#6E6757;--faint:#9A9281;
     --accent:#D9480F;--accent-soft:#FBE6DA;--border:#DCD3C2;--border-strong:#C7BCA6;
     --ok:#2C7A4B;--ok-bg:#E4F0E6;--low:#B26B00;--low-bg:#FBEFD6;--out:#B42318;--out-bg:#FAE4E1;
     --info:#1C5FA8;--info-bg:#E3EDF8;--shadow:0 1px 2px rgba(27,25,21,.05),0 8px 24px rgba(27,25,21,.06);
@@ -18,7 +18,9 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Archivo',sans-serif}
   body{min-height:100vh;background-image:radial-gradient(circle at 1px 1px,rgba(27,25,21,.035) 1px,transparent 0);background-size:22px 22px;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 90px}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 90px;position:relative;z-index:1}
+  .watermark{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.16}
+  .watermark svg{width:100%;height:100%;display:block}
 
   header.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
   .brand{display:flex;align-items:center;gap:14px}
@@ -33,7 +35,8 @@
   @keyframes pulse{50%{opacity:.35}}
 
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-  .stat{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:14px 16px;box-shadow:0 2px 4px rgba(20,45,65,.07),0 14px 30px rgba(20,45,65,.13);position:relative;overflow:hidden;transition:transform .16s ease,box-shadow .16s ease}
+  .stat:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(20,45,65,.10),0 22px 46px rgba(20,45,65,.18)}
   .stat .n{font-family:'JetBrains Mono',monospace;font-size:27px;font-weight:700;line-height:1}
   .stat .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-top:7px}
   .stat .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
@@ -152,7 +155,8 @@
 
   /* ---- Summary insight panel ---- */
   .in-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .in-card{background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:11px 13px}
+  .in-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px;box-shadow:0 1px 2px rgba(20,45,65,.05),0 8px 20px rgba(20,45,65,.09);transition:transform .16s ease,box-shadow .16s ease}
+  .in-card:hover{transform:translateY(-2px);box-shadow:0 4px 9px rgba(20,45,65,.09),0 16px 34px rgba(20,45,65,.15)}
   .in-card .iv{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;line-height:1.1}
   .in-card .il{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:6px}
   .in-card.good .iv{color:var(--ok)} .in-card.warn .iv{color:var(--low)} .in-card.bad .iv{color:var(--out)} .in-card.info .iv{color:var(--info)}
@@ -169,7 +173,6 @@
   body[data-viewonly] .step,
   body[data-viewonly] .rowact,
   body[data-viewonly] #addBtn,
-  body[data-viewonly] #importBtn,
   body[data-viewonly] #emptyBtns,
   body[data-viewonly] #resetBtn{display:none !important}
   body[data-viewonly] .qtybox{justify-content:center}
@@ -182,6 +185,7 @@
     #hideEmptyBtn{flex:1 1 calc(50% - 4px);justify-content:center}
     .wrap{padding:18px 12px 80px}
     .stats{grid-template-columns:repeat(2,1fr);gap:9px}
+    .in-grid{grid-template-columns:repeat(2,1fr)}
     .stat{padding:12px 13px}
     .stat .n{font-size:23px}
     /* toolbar: search full width, selects share a row, filters scroll */
@@ -214,6 +218,7 @@
   }
 </style>
 
+<div class="watermark" aria-hidden="true"><svg viewBox="0 0 1200 820" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#1C5FA8" stroke-width="2" stroke-linecap="round"><path d="M0 0 Q 80 -15 160 0 Q 240 15 320 0 Q 400 -15 480 0 Q 560 15 640 0 Q 720 -15 800 0 Q 880 15 960 0 Q 1040 -15 1120 0 Q 1200 15 1280 0"/><path d="M0 75 Q 80 60 160 75 Q 240 90 320 75 Q 400 60 480 75 Q 560 90 640 75 Q 720 60 800 75 Q 880 90 960 75 Q 1040 60 1120 75 Q 1200 90 1280 75"/><path d="M0 149 Q 80 134 160 149 Q 240 164 320 149 Q 400 134 480 149 Q 560 164 640 149 Q 720 134 800 149 Q 880 164 960 149 Q 1040 134 1120 149 Q 1200 164 1280 149"/><path d="M0 224 Q 80 209 160 224 Q 240 239 320 224 Q 400 209 480 224 Q 560 239 640 224 Q 720 209 800 224 Q 880 239 960 224 Q 1040 209 1120 224 Q 1200 239 1280 224"/><path d="M0 298 Q 80 283 160 298 Q 240 313 320 298 Q 400 283 480 298 Q 560 313 640 298 Q 720 283 800 298 Q 880 313 960 298 Q 1040 283 1120 298 Q 1200 313 1280 298"/><path d="M0 373 Q 80 358 160 373 Q 240 388 320 373 Q 400 358 480 373 Q 560 388 640 373 Q 720 358 800 373 Q 880 388 960 373 Q 1040 358 1120 373 Q 1200 388 1280 373"/><path d="M0 447 Q 80 432 160 447 Q 240 462 320 447 Q 400 432 480 447 Q 560 462 640 447 Q 720 432 800 447 Q 880 462 960 447 Q 1040 432 1120 447 Q 1200 462 1280 447"/><path d="M0 522 Q 80 507 160 522 Q 240 537 320 522 Q 400 507 480 522 Q 560 537 640 522 Q 720 507 800 522 Q 880 537 960 522 Q 1040 507 1120 522 Q 1200 537 1280 522"/><path d="M0 596 Q 80 581 160 596 Q 240 611 320 596 Q 400 581 480 596 Q 560 611 640 596 Q 720 581 800 596 Q 880 611 960 596 Q 1040 581 1120 596 Q 1200 611 1280 596"/><path d="M0 671 Q 80 656 160 671 Q 240 686 320 671 Q 400 656 480 671 Q 560 686 640 671 Q 720 656 800 671 Q 880 686 960 671 Q 1040 656 1120 671 Q 1200 686 1280 671"/><path d="M0 745 Q 80 730 160 745 Q 240 760 320 745 Q 400 730 480 745 Q 560 760 640 745 Q 720 730 800 745 Q 880 760 960 745 Q 1040 730 1120 745 Q 1200 760 1280 745"/><path d="M0 820 Q 80 805 160 820 Q 240 835 320 820 Q 400 805 480 820 Q 560 835 640 820 Q 720 805 800 820 Q 880 835 960 820 Q 1040 805 1120 820 Q 1200 835 1280 820"/></g></svg></div>
 <div class="wrap">
   <header class="top">
     <div class="brand">
@@ -269,7 +274,7 @@
     </select>
     <button class="btn ghost" id="hideEmptyBtn" title="Show / hide lines with 0 available">Hide empty</button>
     <button class="btn ghost" id="refreshBtn" title="Pull latest from team"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg></button>
-    <button class="btn ghost" id="importBtn" title="Upload a stock export from Excel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg> Upload Excel</button>
+    <button class="btn ghost" id="importBtn" title="Upload your daily system stock export (.xlsx) to update the shared list"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg> Upload Excel</button>
     <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none">
     <button class="btn primary" id="addBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg> Add line</button>
   </div>
@@ -302,7 +307,6 @@
     <span class="note" id="updatedNote">—</span>
     <div class="footacts">
       <button class="linkbtn" id="dbSettingsBtn">Database settings</button>
-      <button class="linkbtn" id="exportBtn">Export current stock (.xlsx)</button>
       <button class="linkbtn danger" id="resetBtn">Reset all data</button>
     </div>
   </footer>
@@ -645,36 +649,52 @@ function renderInsight(){
   if(!base.length){ $('#inSub').textContent=''; body.innerHTML='<div class="an-empty">No stock matches this filter.</div>'; return; }
 
   let totAvail=0, totExp=0, totHold=0, totDmg=0, outLines=0, lowLines=0;
-  const refAgg={}, outByRef={};
+  const refAgg={}, outByRef={}, replenByRef={}, expByRef={}; const sizes=new Set();
   base.forEach(it=>{
     totAvail+=it.available||0; totExp+=it.expSoon||0; totHold+=it.hold||0; totDmg+=it.damaged||0;
+    if(it.size!=null && it.size!=='') sizes.add(String(it.size));
     const s=statusOf(it);
     if(s==='out'){ outLines++; outByRef[it.ref]=(outByRef[it.ref]||0)+1; }
-    else if(s==='low') lowLines++;
+    else if(s==='low'){ lowLines++; }
+    if(s==='out'||s==='low') replenByRef[it.ref]=(replenByRef[it.ref]||0)+1;
+    if((it.expSoon||0)>0) expByRef[it.ref]=(expByRef[it.ref]||0)+(it.expSoon||0);
     if(!refAgg[it.ref]) refAgg[it.ref]={avail:0,name:it.name};
     refAgg[it.ref].avail+=it.available||0;
   });
   const refs=Object.keys(refAgg);
+  const onHand=totAvail+totExp+totHold+totDmg;
+  const inStock=base.length-outLines;
+  const fillRate=base.length? Math.round(inStock/base.length*100) : 0;
+  const avgPerLine=base.length? Math.round(totAvail/base.length) : 0;
   const top=Object.entries(refAgg).map(([ref,v])=>({ref,...v})).sort((a,b)=>b.avail-a.avail).slice(0,3);
   const worstOut=Object.entries(outByRef).map(([ref,n])=>({ref,n})).sort((a,b)=>b.n-a.n).slice(0,4);
+  const replen=Object.entries(replenByRef).map(([ref,n])=>({ref,n})).sort((a,b)=>b.n-a.n).slice(0,4);
+  const expTop=Object.entries(expByRef).map(([ref,n])=>({ref,n})).sort((a,b)=>b.n-a.n).slice(0,4);
 
-  $('#inSub').textContent = refs.length+' refs · '+base.length+' lines'+(filter!=='all'||q?' (filtered)':'');
+  $('#inSub').textContent = refs.length+' refs · '+base.length+' lines · '+fillRate+'% in stock'+(filter!=='all'||q?' (filtered)':'');
 
   const cards=[
-    {cls:'',    v:totAvail.toLocaleString(), l:'Available units'},
-    {cls:'info',v:refs.length,               l:'References'},
-    {cls:'bad', v:outLines,                  l:'Out-of-stock lines'},
-    {cls:'warn',v:lowLines,                  l:'Low-stock lines'},
-    {cls:'info',v:totExp.toLocaleString(),   l:'Short-expiry units'},
-    {cls:'',    v:totHold.toLocaleString(),  l:'On hold'},
-    {cls:'',    v:totDmg.toLocaleString(),   l:'Damaged'},
-    {cls:'',    v:base.length,               l:'Lines shown'}
+    {cls:'',     v:totAvail.toLocaleString(),  l:'Available units'},
+    {cls:'',     v:onHand.toLocaleString(),    l:'Total on-hand'},
+    {cls:'good', v:fillRate+'%',               l:'Lines in stock'},
+    {cls:'good', v:inStock.toLocaleString(),   l:'In-stock lines'},
+    {cls:'info', v:refs.length,                l:'References'},
+    {cls:'info', v:sizes.size,                 l:'Distinct powers'},
+    {cls:'warn', v:lowLines,                   l:'Low-stock lines'},
+    {cls:'bad',  v:outLines,                   l:'Out-of-stock lines'},
+    {cls:'info', v:totExp.toLocaleString(),    l:'Short-expiry units'},
+    {cls:'',     v:totHold.toLocaleString(),   l:'On hold'},
+    {cls:'',     v:totDmg.toLocaleString(),    l:'Damaged'},
+    {cls:'',     v:avgPerLine.toLocaleString(),l:'Avg avail / line'}
   ];
   let html='<div class="in-grid">'+cards.map(c=>'<div class="in-card '+c.cls+'"><div class="iv">'+c.v+'</div><div class="il">'+c.l+'</div></div>').join('')+'</div>';
 
   const notes=[];
+  notes.push('<b>'+fillRate+'%</b> of lines in stock — '+inStock.toLocaleString()+' of '+base.length.toLocaleString()+' lines have available stock.');
   if(top.length) notes.push('Best stocked: '+top.map(t=>'<span class="tag" onclick="setRef(\''+t.ref+'\')">'+esc(t.ref)+' · '+t.avail.toLocaleString()+'</span>').join(''));
+  if(replen.length) notes.push('Needs replenishment (low + out): '+replen.map(t=>'<span class="tag warn" onclick="setRef(\''+t.ref+'\')">'+esc(t.ref)+' · '+t.n+'</span>').join(''));
   if(worstOut.length) notes.push('Most out-of-stock lines: '+worstOut.map(t=>'<span class="tag bad" onclick="setRef(\''+t.ref+'\')">'+esc(t.ref)+' · '+t.n+'</span>').join(''));
+  if(expTop.length) notes.push('Highest short-expiry: '+expTop.map(t=>'<span class="tag" onclick="setRef(\''+t.ref+'\')">'+esc(t.ref)+' · '+t.n.toLocaleString()+'</span>').join(''));
   if(totExp>0) notes.push('<b>'+totExp.toLocaleString()+'</b> units are nearing expiry — tap "Short expiry" above to review.');
   body.innerHTML = html + (notes.length? '<div class="in-note">'+notes.join('<br>')+'</div>' : '');
 }
@@ -712,67 +732,55 @@ async function resetAll(){
 let toastTimer=null;
 function toast(msg){const t=$('#toast');t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},3400);}
 
-/* ---------- Excel import (HOYA stock export → aggregate by reference × power) ---------- */
+/* ---------- Excel column helpers (used by the importer) ---------- */
 const H={ref:['item number','item','reference','ref','sku','code'],name:['product name','description','product','name'],
   size:['size','power','diopter','dioptre'],color:['color','colour','cylinder','cyl','toric'],status:['inventory status','status'],owner:['owner','ownership','stock type']};
 function findCol(keys,wanted){for(const k of keys){const lk=k.trim().toLowerCase();if(wanted.includes(lk))return k;}return null;}
+/* ---------- Excel import (system stock export → aggregate by reference × power × colour) ---------- */
 async function handleFile(file){
   if(!file)return; setSync('busy','reading file…');
   try{
     const buf=await file.arrayBuffer();
     const wb=XLSX.read(buf,{type:'array'});
-    // prefer a sheet that looks like the line-level export
     let sheetName=wb.SheetNames.find(n=>/export/i.test(n))||wb.SheetNames[0];
     let rows=XLSX.utils.sheet_to_json(wb.Sheets[sheetName],{defval:''});
     if(!rows.length){toast('No rows found in that file.');setSync('ok','synced');return;}
     const keys=Object.keys(rows[0]);
     const cRef=findCol(keys,H.ref),cName=findCol(keys,H.name),cSize=findCol(keys,H.size),cColor=findCol(keys,H.color),cStat=findCol(keys,H.status),cOwner=findCol(keys,H.owner);
-    if(!cRef){toast('Couldn\u2019t find an "Item number / Reference" column.');setSync('ok','synced');return;}
+    if(!cRef){toast('Could not find an "Item number" column. Upload the system stock export.');setSync('ok','synced');return;}
 
+    // each row = one unit; aggregate by reference × power × colour and count statuses
     const g={}; let skippedConsign=0, skippedExpired=0;
     rows.forEach(r=>{
       const ref=String(r[cRef]||'').trim(); if(!ref)return;
-      // exclude consignment stock and expired stock
       if(cOwner && String(r[cOwner]||'').trim().toLowerCase()==='consignment'){skippedConsign++;return;}
       const st=String(cStat?r[cStat]:'available').trim().toLowerCase();
-      const isExpired = st.startsWith('exp') && !st.startsWith('expiryshor');
-      if(isExpired){skippedExpired++;return;}
+      if(st.startsWith('exp') && !st.startsWith('expiryshor')){skippedExpired++;return;}   // expired excluded
       let size=cSize?r[cSize]:''; if(typeof size==='number')size=(''+size); size=String(size).trim();
       let color=cColor?String(r[cColor]||'').trim():'-'; if(color===''||color.toLowerCase()==='nan')color='-';
       const k=ref+'|'+size+'|'+color;
-      if(!g[k])g[k]={ref,name:cName?String(r[cName]||'').trim():'',size,color,available:0,expSoon:0,hold:0,damaged:0,total:0,thresh:5};
-      const rec=g[k]; rec.total++;
+      if(!g[k])g[k]={ref,name:cName?String(r[cName]||'').trim():'',size,color,available:0,expSoon:0,hold:0,damaged:0,thresh:5};
+      const rec=g[k];
       if(st.startsWith('avail'))rec.available++;
       else if(st.startsWith('expiryshor'))rec.expSoon++;
       else if(st.startsWith('hold'))rec.hold++;
       else if(st.startsWith('damag'))rec.damaged++;
-      else rec.available++; // unknown status counts as available stock
+      else rec.available++;
     });
     const lines=Object.values(g);
+    if(!lines.length){toast('No usable stock rows found.');setSync('ok','synced');return;}
     lines.forEach(l=>{ l.id=lineId(l); l.total=(l.available||0)+(l.expSoon||0)+(l.hold||0)+(l.damaged||0); });
-    if(items.length && !confirm('This will replace the current shared list with '+lines.length+' lines from the file. Continue?')){setSync('ok','synced · cloud');return;}
+    const units=lines.reduce((s,l)=>s+(l.available||0),0);
+    if(items.length && !confirm('Update the shared list from this export?\n\n\u2022 '+lines.length+' lines\n\u2022 '+units.toLocaleString()+' available units\n\nThis replaces the current list with the latest export. Continue?')){setSync('ok',sbReady()?'synced \u00b7 cloud':'shared snapshot');return;}
     items=lines; render();
-    let msg='Imported '+lines.length+' lines';
+    let msg='Updated '+lines.length+' lines \u00b7 '+units.toLocaleString()+' available';
     if(skippedConsign||skippedExpired) msg+=' (excluded '+skippedConsign+' consignment, '+skippedExpired+' expired)';
-    if(!sbReady()){ setSync('warn','not connected · tap to set up'); toast(msg+' · connect a database to share'); return; }
+    if(!sbReady()){ setSync('warn','not connected \u00b7 tap to set up'); toast(msg+' \u00b7 connect a database to share'); return; }
     setSync('busy','saving to cloud…');
-    try{ await deleteAll(); }catch(e){}                       // replace = clean snapshot
-    if(await upsert(lines.map(toRow))){ setSync('ok','synced · cloud'); stamp(); toast(msg); }
-    else setSync('err','save failed · tap to retry');
-  }catch(e){setSync('err','import failed');toast('Could not read that file. Use the system stock export (.xlsx/.csv).');}
-}
-
-/* ---------- Excel export ---------- */
-function exportXlsx(){
-  if(!items.length){toast('Nothing to export yet.');return;}
-  const aoa=[['Reference','Product name','Power','Color','Available','Short expiry','Hold','Damaged','Total','Low-stock at','Status']];
-  [...items].sort((a,b)=>(a.ref+'').localeCompare(b.ref+'')||(parseFloat(a.size)||0)-(parseFloat(b.size)||0)||(a.color+'').localeCompare(b.color+'')).forEach(it=>{
-    aoa.push([it.ref,it.name,it.size,(it.color&&it.color!=='-'?it.color:''),it.available||0,it.expSoon||0,it.hold||0,it.damaged||0,it.total||it.available||0,it.thresh??5,LABEL[statusOf(it)]]);
-  });
-  const ws=XLSX.utils.aoa_to_sheet(aoa);
-  ws['!cols']=[{wch:10},{wch:34},{wch:7},{wch:7},{wch:10},{wch:12},{wch:7},{wch:9},{wch:8},{wch:12},{wch:13}];
-  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Stock');
-  XLSX.writeFile(wb,'stock-availability.xlsx');
+    try{ await deleteAll(); }catch(e){}                       // clean snapshot, then write current export
+    if(await upsert(lines.map(toRow))){ setSync('ok','synced \u00b7 cloud'); stamp(); toast(msg); }
+    else setSync('err','save failed \u00b7 tap to retry');
+  }catch(e){setSync('err','import failed');toast('Could not read that file. Upload the system stock export (.xlsx) with an "Export" sheet.');}
 }
 
 /* ---------- wire up ---------- */
@@ -780,9 +788,19 @@ $('#addBtn').onclick=openAdd; $('#emptyAdd').onclick=openAdd;
 $('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveForm;
 $('#scrim').onclick=e=>{if(e.target===$('#scrim'))closeModal();};
 $('#resetBtn').onclick=resetAll; $('#refreshBtn').onclick=()=>pull(true);
-$('#importBtn').onclick=()=>$('#fileInput').click(); $('#emptyUpload').onclick=()=>$('#fileInput').click();
+const UPLOAD_PASSWORD='hoya2026';   // <-- change this to your own password
+let uploadUnlocked=false;
+function requestUpload(){
+  if(!uploadUnlocked){
+    const p=prompt('Enter password to upload stock:');
+    if(p===null) return;                       // cancelled
+    if(p!==UPLOAD_PASSWORD){ toast('Incorrect password'); return; }
+    uploadUnlocked=true;                        // stays unlocked until the page is reloaded
+  }
+  $('#fileInput').click();
+}
+$('#importBtn').onclick=requestUpload; $('#emptyUpload').onclick=requestUpload;
 $('#fileInput').onchange=e=>{handleFile(e.target.files[0]);e.target.value='';};
-$('#exportBtn').onclick=exportXlsx;
 $('#inToggle').onclick=()=>$('#insight').classList.toggle('collapsed');
 $('#sortSel').onchange=e=>{sortMode=e.target.value;render();};
 $('#hideEmptyBtn').onclick=()=>{hideEmpty=!hideEmpty;$('#hideEmptyBtn').classList.toggle('active',hideEmpty);render();};
